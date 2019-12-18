@@ -32,6 +32,15 @@
       Vue.use(Vant);
     这种方式会导入所有组件增加了代码包的体积
 
+  6, public/js : flexible.js :
+    flexible.js能根据<html>的font-size计算出元素的盒模型大小。这样就意味着我们只需要在根元素确定一个px字号，因此来算出各元素的宽高，从而实现屏幕的适配效果。
+
+  7,axios 插件 ： npm i axios --save
+
+  8, qs 插件 ： npm i qs --save  :qs 是一个增加了一些安全性的查询字符串解析和序列化字符串的库。
+    qs.parse()是将URL解析成对象的形式
+    qs.stringify()是将对象 序列化成URL的形式，以&进行拼接
+
  # 二，首页开发
   1，首页导航栏的封装和使用
     导航栏基本样式为 左中右（例：返回  标题  更多） 三个插槽
@@ -185,6 +194,32 @@
 
       3.6 bug : 使用 keep-acive 包裹的组件状态往往只能保存几次，来回几次就跳回了顶端
         使用组件销毁前后保存坐标，并跳转
+
+      3.7 监听图片导致频繁调用了 refresh 函数，我们使用防抖
+          mounted() {
+            //不混入直接使用
+            //监听图片加载完成
+            const refresh = this.debounce(this.$refs.scroll.refresh, 100); //防抖
+            this.$bus.$on("imgLoad", () => {
+              //事件总线
+              refresh();
+            });
+          },
+          methods: {
+            debounce(func, delay) {
+              //防抖
+              let timer = null;
+              return function(...args) {
+                //可以传入多个参数
+                if (timer) clearTimeout(timer);
+                timer = setTimeout(() => {
+                  func.apply(this, args);
+                  console.log("图片加载完成!");
+                }, delay);
+              };
+            },
+
+        由于组件可能在多个地方重复使用，我们可以封装一个混入js文件minxis，专门存放用到的data或methods
                 
   # 四，跳转详情页
       1，路由跳转传值：

@@ -1,15 +1,15 @@
 module.exports = {
   // 打包后不生成map文件,减小项目体积
-  productionSourceMap: false,
+  //productionSourceMap: false,
   // 打包后使用相对路径,方便服务器上传多个项目
-  publicPath: "./",
+  //publicPath: "./",
   // 打包后生成html的引号
-  chainWebpack: config => {
-    config.plugin("html").tap(args => {
-      args[0].minify = false;
-      return args;
-    });
-  },
+  // chainWebpack: config => {
+  //   config.plugin("html").tap(args => {
+  //     args[0].minify = false;
+  //     return args;
+  //   });
+  // },
   configureWebpack: {
     resolve: {
       // 配置路径别名
